@@ -1,0 +1,670 @@
+/* ============================================
+   Andika — Offline Markdown Editor
+   Student-centered documentation tool
+   Unicode character set, dark mode support
+   ============================================ */
+
+/* ----- TYPOGRAPHY ----- */
+@import url('https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap');
+
+/* ----- COLOR SCHEME (Light Mode - Default) ----- */
+:root {
+    --granite: #4c5b5cff;
+    --vibrant-coral: #ff715bff;
+    --golden-pollen: #f9cb40ff;
+    --bg-light: #fdfdfd;
+    --bg-sidebar: #f8f9fa;
+    --bg-editor: #fafafa;
+    --bg-preview: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #5e5e5e;
+    --border-color: #dddddd;
+    --hover-bg: #fff3e0;
+    --code-bg: #f6f8fa;
+    --shadow-color: rgba(0,0,0,0.05);
+    --header-text: white;
+    --modal-bg: white;
+}
+
+/* ----- DARK MODE (Applied via class) ----- */
+body.dark-mode {
+    --granite: #2c3a3b;
+    --vibrant-coral: #ff8a75;
+    --golden-pollen: #f9d342;
+    --bg-light: #1e1e1e;
+    --bg-sidebar: #252526;
+    --bg-editor: #1e1e1e;
+    --bg-preview: #252526;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #444444;
+    --hover-bg: #3a2c25;
+    --code-bg: #2d2d2d;
+    --shadow-color: rgba(0,0,0,0.3);
+    --header-text: #e0e0e0;
+    --modal-bg: #2d2d2d;
+}
+
+/* ----- BASE STYLES ----- */
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text-primary);
+    line-height: 1.5;
+    background-color: var(--bg-light);
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* ----- HEADER ----- */
+header {
+    background-color: var(--granite);
+    color: var(--header-text);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid var(--vibrant-coral);
+    transition: background-color 0.2s;
+}
+
+.header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+header h1 {
+    font-family: 'Andika', sans-serif;
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+.header-tagline {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    font-style: italic;
+}
+
+/* ----- FILE MANAGEMENT TOOLBAR ----- */
+.file-management {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.file-management input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    width: 180px;
+    color: #333;
+}
+
+.file-management button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s;
+    background-color: var(--golden-pollen);
+    color: var(--granite);
+}
+
+.file-management button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.help-btn {
+    background-color: transparent !important;
+    color: white !important;
+    border: 1px solid white !important;
+}
+
+.help-btn:hover {
+    background-color: rgba(255,255,255,0.1) !important;
+}
+
+.dark-mode-btn {
+    background-color: transparent !important;
+    color: white !important;
+    border: 1px solid white !important;
+    font-size: 18px !important;
+    padding: 8px 12px !important;
+}
+
+.export-group {
+    display: flex;
+    gap: 4px;
+}
+
+.export-btn {
+    background-color: rgba(255,255,255,0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+}
+
+.export-btn:hover {
+    background-color: rgba(255,255,255,0.3) !important;
+}
+
+/* ----- THREE-COLUMN LAYOUT ----- */
+.main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ----- SIDEBAR ----- */
+.sidebar {
+    width: 320px;
+    background-color: var(--bg-sidebar);
+    padding: 15px;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.sidebar h3 {
+    font-family: 'Andika', sans-serif;
+    color: var(--granite);
+    border-bottom: 2px solid var(--vibrant-coral);
+    padding-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+body.dark-mode .sidebar h3 {
+    color: #fefefe;  /* Pure white for maximum readability */
+    border-bottom-color: var(--vibrant-coral); /* Keep coral border */
+}
+
+.template-category {
+    font-family: 'Andika', sans-serif;
+    font-weight: 600;
+    color: var(--granite);
+    margin-top: 20px;
+    margin-bottom: 8px;
+    display: block;
+    border-bottom: 1px solid var(--vibrant-coral);
+    padding-bottom: 3px;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+}
+
+/* DARK MODE - Template category headings */
+body.dark-mode .template-category {
+    color: #fefefe;  
+    border-bottom-color: var(--vibrant-coral);
+}
+
+/* ----- TEMPLATE BROWSER ----- */
+.template-search {
+    margin-bottom: 15px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 14px;
+    background: white;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-preview);
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--vibrant-coral);
+    box-shadow: 0 0 0 2px rgba(255, 113, 91, 0.1);
+}
+
+.accordion-item {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: var(--bg-preview);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: box-shadow 0.2s, background-color 0.2s;
+}
+
+.accordion-header {
+    padding: 12px 15px;
+    background: var(--bg-preview);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-bottom: 1px solid transparent;
+    color: var(--text-primary);
+}
+
+.accordion-header:hover {
+    background: var(--hover-bg);
+}
+
+.accordion-header.active {
+    background: var(--granite);
+    color: white;
+    border-bottom-color: var(--vibrant-coral);
+}
+
+body.dark-mode .accordion-header.active {
+    background: var(--vibrant-coral); /* Coral makes active category pop */
+    color: var(--granite); /* Dark text on coral */
+}
+
+.accordion-header .count {
+    background: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #495057;
+}
+
+.accordion-header.active .count {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+.accordion-content {
+    padding: 10px;
+    background: var(--bg-preview);
+}
+
+.template-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.template-list li {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 3px solid transparent;
+    color: var(--text-primary);
+}
+
+.template-list li:hover {
+    background-color: var(--hover-bg);
+    border-left-color: var(--vibrant-coral);
+    transform: translateX(2px);
+}
+
+/* ----- CHEATSHEET ACCORDION (NEW) ----- */
+.cheatsheet-accordion {
+    margin-top: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-preview);
+}
+
+.cheatsheet-item {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cheatsheet-item:last-child {
+    border-bottom: none;
+}
+
+.cheatsheet-header {
+    padding: 12px 15px;
+    background: var(--bg-sidebar);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--granite);
+    transition: background 0.2s, color 0.2s;
+}
+
+body.dark-mode .cheatsheet-header {
+    /* color: var(--bg-preview); */  /* Uses white/off-white from preview background */
+    color: #fefefe !important; 
+    background: var(--granite); /* Darker background for contrast */
+}
+
+.cheatsheet-header.active {
+    background: var(--granite);
+    color: white;
+}
+
+body.dark-mode .cheatsheet-header.active {
+    background: var(--vibrant-coral); /* Coral stands out nicely in dark mode */
+    color: var(--granite); /* Dark text on coral for contrast */
+}
+
+.cheatsheet-header:hover {
+    background: var(--hover-bg);
+}
+
+body.dark-mode .cheatsheet-header:hover {
+    background: #3a4a4b; /* Lighter than granite for hover state */
+    color: white;
+}
+
+.cheatsheet-header:hover {
+    background: var(--hover-bg);
+}
+
+.cheatsheet-header::before {
+    content: '▸';
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.cheatsheet-header.active::before {
+    content: '▾';
+}
+
+.cheatsheet-content {
+    display: none;
+    padding: 12px;
+    background: var(--bg-preview);
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+}
+
+.cheatsheet-content div {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.cheatsheet-content code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 11px;
+    color: #d14;
+}
+
+body.dark-mode .cheatsheet-content code {
+    color: #ffa7a7;
+    background: #3c3c3c;
+}
+
+.table-wizard-btn {
+    background-color: var(--golden-pollen);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--granite);
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.table-wizard-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cheatsheet-footer {
+    margin-top: 12px;
+    padding: 10px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+}
+
+/* ----- EDITOR PANE ----- */
+.editor-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid var(--border-color);
+    background: var(--bg-editor);
+}
+
+/* ----- PREVIEW PANE ----- */
+.preview-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bg-preview);
+}
+
+/* ----- PANE HEADERS ----- */
+.pane-header {
+    padding: 10px 15px;
+    background: var(--bg-preview);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--granite);
+    font-weight: 500;
+}
+
+.pane-title {
+    font-family: 'Andika', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+/* DARK MODE - Pane headers */
+body.dark-mode .pane-header {
+    color: #ffffff;
+    background: #1e1e1e;
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .pane-title {
+    color: #ffffff;  /* White for EDITOR and PREVIEW text */
+}
+
+.word-count, .preview-meta {
+    background: var(--code-bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* ----- CODEMIRROR ----- */
+.CodeMirror {
+    height: 100% !important;
+    font-family: 'Fira Mono', monospace !important;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ----- PREVIEW CONTENT ----- */
+#preview {
+    padding: 20px;
+    overflow-y: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+#preview h1, #preview h2 { 
+    border-bottom: 1px solid var(--border-color); 
+    padding-bottom: 0.3em; 
+}
+
+#preview h1 { font-size: 2em; }
+#preview h2 { font-size: 1.5em; }
+#preview h3 { font-size: 1.25em; }
+
+#preview code {
+    background-color: var(--code-bg);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 85%;
+    color: var(--text-primary);
+}
+
+#preview pre {
+    background-color: var(--code-bg);
+    padding: 16px;
+    overflow: auto;
+    border-radius: 6px;
+    line-height: 1.45;
+}
+
+#preview pre code {
+    background: none;
+    padding: 0;
+}
+
+#preview blockquote {
+    border-left: 4px solid var(--vibrant-coral);
+    padding: 0 1em;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+#preview table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#preview th,
+#preview td {
+    border: 1px solid var(--border-color);
+    padding: 6px 13px;
+}
+
+#preview th {
+    background-color: var(--code-bg);
+}
+
+/* ----- MODAL ----- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    color: var(--text-primary);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 70%;
+    max-width: 800px;
+    position: relative;
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.modal-content h2 {
+    font-family: 'Andika', sans-serif;
+    color: var(--granite);
+    margin-top: 0;
+    border-bottom: 2px solid var(--vibrant-coral);
+    padding-bottom: 10px;
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.modal-content h3 {
+    color: var(--granite);
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--vibrant-coral);
+}
+
+/* ----- PRINT STYLES ----- */
+@media print {
+    body, body.dark-mode {
+        background: white;
+        color: black;
+    }
+    
+    .sidebar, .editor-pane, .file-management, 
+    .dark-mode-btn, .help-btn, .export-group, 
+    .pane-header, .modal {
+        display: none !important;
+    }
+    
+    .main-container, .preview-pane {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    #preview {
+        color: black;
+    }
+    
+    #preview pre, #preview code {
+        background: #f5f5f5 !important;
+        color: black !important;
+        border: 1px solid #ddd;
+    }
+}

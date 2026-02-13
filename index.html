@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andika — Offline Markdown Editor for Students</title>
+    
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    
+    <!-- Fonts: Andika (headings), Inter (UI), Fira Mono (editor) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Inter:wght@400;500;600&family=Fira+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <h1>Andika</h1>
+            <span class="header-tagline">— write, document, submit</span>
+        </div>
+        
+        <div class="file-management">
+            <!-- Dark Mode Toggle -->
+            <button id="btn-dark-mode" class="dark-mode-btn" title="Toggle dark mode">☀︎</button>
+            
+            <!-- Help -->
+            <button id="btn-help" class="help-btn">&#63; Help</button>
+            
+            <!-- File operations -->
+            <button id="btn-new" class="icon-btn">⎄ New</button>
+            <button id="btn-open" class="icon-btn">⌂ Open</button>
+            
+            <input type="text" id="filename" placeholder="README.md" value="README.md">
+            
+            <button id="btn-save" class="icon-btn">↓ Save</button>
+            
+            <!-- Export buttons -->
+            <div class="export-group">
+                <button id="btn-export-pdf" class="export-btn" title="Export as PDF">⌕ PDF</button>
+                <button id="btn-export-html" class="export-btn" title="Export as HTML">⌗ HTML</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- LEFT COLUMN: Templates & Cheatsheet -->
+        <aside class="sidebar">
+            <h3>⌘ Document Library</h3>
+            
+            <!-- Template Search -->
+            <div class="template-search">
+                <input type="text" id="template-search" placeholder="⌕ Find template..." class="search-input">
+            </div>
+            
+            <!-- Accordion Template Browser -->
+            <div class="template-browser">
+                
+                <!-- Category: Project Foundations -->
+                <div class="accordion-item">
+                    <div class="accordion-header active" data-category="foundations">
+                        ⌗ Project Foundations <span class="count">4</span>
+                    </div>
+                    <div class="accordion-content" id="category-foundations">
+                        <ul class="template-list">
+                            <li data-template="title-badges">⎄ Title + Status Badges</li>
+                            <li data-template="project-structure">⌇ Project Structure</li>
+                            <li data-template="objectives">⌑ Learning Objectives</li>
+                            <li data-template="status">⌖ Project Status</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Category: Technical Documentation -->
+                <div class="accordion-item">
+                    <div class="accordion-header" data-category="technical">
+                        ⎌ Technical Documentation <span class="count">5</span>
+                    </div>
+                    <div class="accordion-content" id="category-technical" style="display: none;">
+                        <ul class="template-list">
+                            <li data-template="tech">⌨ Technologies Used</li>
+                            <li data-template="install">⌄ Installation</li>
+                            <li data-template="configuration">⎀ Configuration</li>
+                            <li data-template="usage">⎁ Usage Examples</li>
+                            <li data-template="api">⌤ API Reference</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Category: Assessment & Submission -->
+                <div class="accordion-item">
+                    <div class="accordion-header" data-category="assessment">
+                        ⌘ Assessment & Submission <span class="count">5</span>
+                    </div>
+                    <div class="accordion-content" id="category-assessment" style="display: none;">
+                        <ul class="template-list">
+                            <li data-template="academic-declaration">⌨ Academic Integrity</li>
+                            <li data-template="challenges">⌭ Challenges & Solutions</li>
+                            <li data-template="what-i-learned">⌤ What I Learned</li>
+                            <li data-template="known-issues">⌽ Known Issues</li>
+                            <li data-template="self-assessment">⌯ Self-Assessment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Category: Collaboration -->
+                <div class="accordion-item">
+                    <div class="accordion-header" data-category="collaboration">
+                        ⚌ Collaboration <span class="count">3</span>
+                    </div>
+                    <div class="accordion-content" id="category-collaboration" style="display: none;">
+                        <ul class="template-list">
+                            <li data-template="contributing">⚍ Contributing</li>
+                            <li data-template="team-roles">⚎ Team Roles</li>
+                            <li data-template="code-of-conduct">⚏ Code of Conduct</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Category: Release & Maintenance -->
+                <div class="accordion-item">
+                    <div class="accordion-header" data-category="release">
+                        ⌂ Release & Maintenance <span class="count">4</span>
+                    </div>
+                    <div class="accordion-content" id="category-release" style="display: none;">
+                        <ul class="template-list">
+                            <li data-template="changelog-enhanced">⌕ Changelog</li>
+                            <li data-template="version">⌗ Version History</li>
+                            <li data-template="roadmap">⌖ Future Roadmap</li>
+                            <li data-template="support">⌨ Support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MARKDOWN CHEATSHEET - ACCORDION STYLE (as requested) -->
+            <span class="template-category">⌕ Markdown Reference</span>
+            <div class="cheatsheet-accordion">
+                
+                <!-- Headings -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Headings</div>
+                    <div class="cheatsheet-content">
+                        <div><code># H1</code> Heading 1</div>
+                        <div><code>## H2</code> Heading 2</div>
+                        <div><code>### H3</code> Heading 3</div>
+                        <div><code>#### H4</code> Heading 4</div>
+                        <div><code>##### H5</code> Heading 5</div>
+                        <div><code>###### H6</code> Heading 6</div>
+                    </div>
+                </div>
+                
+                <!-- Text Formatting -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Text Formatting</div>
+                    <div class="cheatsheet-content">
+                        <div><code>**bold**</code> Bold</div>
+                        <div><code>*italic*</code> Italic</div>
+                        <div><code>***bold+italic***</code> Bold & Italic</div>
+                        <div><code>~~strikethrough~~</code> Strikethrough</div>
+                        <div><code>==highlight==</code> Highlight</div>
+                        <div><code>H~2~O</code> Subscript</div>
+                        <div><code>X^2^</code> Superscript</div>
+                    </div>
+                </div>
+                
+                <!-- Lists -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Lists</div>
+                    <div class="cheatsheet-content">
+                        <div><code>- item</code> Bullet list</div>
+                        <div><code>1. item</code> Numbered list</div>
+                        <div><code>- [ ] task</code> Unchecked task</div>
+                        <div><code>- [x] done</code> Checked task</div>
+                        <div><code>term</code> + <code>: definition</code> Definition list</div>
+                    </div>
+                </div>
+                
+                <!-- Links & Media -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Links & Media</div>
+                    <div class="cheatsheet-content">
+                        <div><code>[text](url)</code> Hyperlink</div>
+                        <div><code>![alt](img.jpg)</code> Image</div>
+                        <div><code><email@site.com></code> Email</div>
+                        <div><code><https://site.com></code> Auto-link</div>
+                        <div><code>[^1]</code> + <code>[^1]: note</code> Footnotes</div>
+                    </div>
+                </div>
+                
+                <!-- Code -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Code</div>
+                    <div class="cheatsheet-content">
+                        <div><code>`code`</code> Inline code</div>
+                        <div><code>```</code> Code block</div>
+                        <div><code>```js</code> Syntax highlighting</div>
+                        <div><code>    </code> Indented (4 spaces)</div>
+                    </div>
+                </div>
+                
+                <!-- Tables -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Tables</div>
+                    <div class="cheatsheet-content">
+                        <div><code>| col1 | col2 |</code></div>
+                        <div><code>|------|------|</code></div>
+                        <div><code>| data | data |</code></div>
+                        <div style="margin-top:5px;"><code>:---</code> left · <code>:---:</code> center · <code>---:</code> right</div>
+                    </div>
+                </div>
+                
+                <!-- Quotes & Rules -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Quotes & Rules</div>
+                    <div class="cheatsheet-content">
+                        <div><code>> quote</code> Blockquote</div>
+                        <div><code>>> nested</code> Nested quote</div>
+                        <div><code>---</code> Horizontal rule</div>
+                        <div><code>***</code> Horizontal rule</div>
+                    </div>
+                </div>
+                
+                <!-- Diagrams & Math -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Diagrams & Math</div>
+                    <div class="cheatsheet-content">
+                        <div><code>```mermaid</code> Flowcharts</div>
+                        <div><code>graph TD</code> Direction</div>
+                        <div><code>A-->B</code> Edge</div>
+                        <div><code>$$ math $$</code> LaTeX block</div>
+                        <div><code>$E=mc^2$</code> Inline math</div>
+                    </div>
+                </div>
+                
+                <!-- Table Generator Button -->
+                <div class="cheatsheet-item">
+                    <div class="cheatsheet-header">Tools</div>
+                    <div class="cheatsheet-content">
+                        <button id="btn-table-wizard" class="table-wizard-btn">⎔ Table Generator</button>
+                        <p style="margin-top:8px; font-size:11px; color:var(--text-secondary);">Click to open table wizard</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cheatsheet-footer">
+                <span>⎁ <strong>Pro tip:</strong> Right-click preview → Print → Save as PDF</span>
+            </div>
+        </aside>
+
+        <!-- MIDDLE COLUMN: Editor -->
+        <section class="editor-pane">
+            <div class="pane-header">
+                <span class="pane-title">⎁ EDITOR</span>
+                <span class="word-count" id="word-count">0 words</span>
+            </div>
+            <textarea id="editor"></textarea>
+        </section>
+
+        <!-- RIGHT COLUMN: Preview -->
+        <section class="preview-pane">
+            <div class="pane-header">
+                <span class="pane-title">⌕ PREVIEW</span>
+                <span class="preview-meta">GitHub-flavored + Mermaid</span>
+            </div>
+            <div id="preview"></div>
+        </section>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>⌘ How to Use Andika</h2>
+            
+            <div class="modal-grid">
+                <div>
+                    <h3>⎄ Getting Started</h3>
+                    <p><strong>⎄ New:</strong> Start a blank document</p>
+                    <p><strong>⌂ Open:</strong> Load a .md file</p>
+                    <p><strong>↓ Save:</strong> Save to your computer</p>
+                    <p><strong>⌕ PDF/HTML:</strong> Export formatted documents</p>
+                </div>
+                
+                <div>
+                    <h3>⌗ Templates</h3>
+                    <p>Click any template to insert at cursor. Each includes placeholders—<strong>edit to make it yours</strong>.</p>
+                    <p>Use <strong>⌕ search</strong> to quickly find templates.</p>
+                </div>
+                
+                <div>
+                    <h3>⎁ Writing & Preview</h3>
+                    <p><strong>Editor:</strong> Write in Markdown syntax</p>
+                    <p><strong>Preview:</strong> GitHub-style rendering with diagrams</p>
+                    <p><strong>☀︎/☾:</strong> Toggle dark mode</p>
+                    <p><strong>Keyboard:</strong> Ctrl+B bold, Ctrl+I italic, Ctrl+K link</p>
+                </div>
+                
+                <div>
+                    <h3>⌕ Export Options</h3>
+                    <p><strong>PDF:</strong> Print preview → Save as PDF</p>
+                    <p><strong>HTML:</strong> Standalone web page with styling</p>
+                </div>
+            </div>
+            
+            <p style="margin-top:20px; color:var(--granite); text-align:center;">
+                Andika — write, document, submit. Free for students, forever offline.
+            </p>
+        </div>
+    </div>
+
+    <!-- Table Wizard Modal -->
+    <div id="table-wizard-modal" class="modal">
+        <div class="modal-content" style="width: 400px;">
+            <span class="close-btn" id="close-table-wizard">&times;</span>
+            <h2>⎔ Table Generator</h2>
+            
+            <div style="margin: 20px 0;">
+                <label style="display:block; margin-bottom:8px;">Columns:</label>
+                <input type="number" id="table-cols" min="1" max="10" value="3" style="width:80px; padding:8px;">
+                
+                <label style="display:block; margin:15px 0 8px;">Rows:</label>
+                <input type="number" id="table-rows" min="1" max="20" value="4" style="width:80px; padding:8px;">
+                
+                <label style="display:block; margin:15px 0 8px;">Alignment:</label>
+                <select id="table-align" style="padding:8px; width:120px;">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                </select>
+            </div>
+            
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button id="btn-insert-table" class="export-btn" style="background:var(--golden-pollen)!important; color:var(--granite)!important;">Insert Table</button>
+                <button id="btn-cancel-table" class="help-btn" style="background:transparent!important;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js"></script>
+    
+    <!-- Application -->
+    <script src="js/app.js"></script>
+</body>
+</html>
