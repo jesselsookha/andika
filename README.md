@@ -4,8 +4,8 @@
 
 ---
 
-⌕ [Live Demo](https://jesselsookha.github.io/andika) ·  
-⌗ [Report Bug](https://github.com/jesselsookha/andika/issues) ·  
+⌕ [Live Demo](https://jesselsookha.github.io/andika)   
+⌗ [Report Bug](https://github.com/jesselsookha/andika/issues)   
 ⌨ [Request Feature](https://github.com/jesselsookha/andika/issues)
 
 ---
@@ -257,3 +257,4 @@ That's how we learn.
 Free for students. Forever offline. Forever open source.
 
 ---
+
